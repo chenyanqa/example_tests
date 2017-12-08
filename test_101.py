@@ -302,22 +302,156 @@
 # print(list(filter(huishu,map(str,[x for x in range(1,1000)]))))
 
 
-def is_palindrome(num):
-    num_str = str(num)  #将整数转换为字符串
-    str_len = len(num_str)  #求某个数的长度
-    for k in range(str_len):
-        if num_str[k] != num_str[str_len - 1 - k]:
-            return False
-    return True
+# def is_palindrome(num):
+#     num_str = str(num)  #将整数转换为字符串
+#     str_len = len(num_str)  #求某个数的长度
+#     for k in range(str_len):
+#         if num_str[k] != num_str[str_len - 1 - k]:
+#             return False
+#     return True
+#
+#
+# # 调用
+# output = filter(is_palindrome, range(1, 1000))  #给filter（）的两个参数，一个是用来判断某个数 是否为回数的函数，另外一个参数为一个序列
+# print('1~1000以内的回数:', list(output))  #由于filter（）函数返回一个可迭代的对象 因此需要使用list（）将其强制输出
 
 
-# 调用
-output = filter(is_palindrome, range(1, 1000))  #给filter（）的两个参数，一个是用来判断某个数 是否为回数的函数，另外一个参数为一个序列
-print('1~1000以内的回数:', list(output))  #由于filter（）函数返回一个可迭代的对象 因此需要使用list（）将其强制输出
+# #装饰器
+#
+# def logger(func):
+#     def inner(*args,**kwargs):
+#         print('参数为：%s，%s'%(args,kwargs))
+#         return func(*args,**kwargs) +1
+#     return inner
+#
+# @logger
+# def foo1(x,y=2):
+#     return x*y
+#
+# print(foo1(5,4))   #输出为：参数为：(5, 4)，{}  21
+#
+# @logger
+# def foo2():
+#     return 2
+#
+# @logger
+# def foo3(x=5,y=5,z=2):
+#     return x+y+z
+#
+# @logger
+# def foo4(x,y,z):
+#     return x+y+z
+#
+# # print(foo1(5,4))   #输出为：参数为：(5, 4)，{}  21
+# # print(foo1(1))  #参数为：(1,)，{}   3
+# # print(foo2(1))   #输出报错：TypeError: foo2() takes 0 positional arguments but 1 was given
+# # print(foo2())   #参数为：()，{}   3
+# # print(foo3())   #参数为：()，{}  13
+# # print(foo4())  #输出报错：TypeError: foo4() missing 3 required positional arguments: 'x', 'y', and 'z'
+#
 
 
+# a_string = "This is a global variable"
+# def foo():
+#     a_string = "test"
+#     print(locals())
+#
+# print(foo())
+# print(a_string)
 
 
+# a_string = "This is a global variable"
+# def foo():
+#     a_string = 'test'
+#     def inner():
+#         nonlocal a_string
+#         a_string = a_string +'111'
+#         print(a_string)
+#     return inner
+#
+# f = foo()
+# f()
+# print(a_string)
+
+#函数属性：
+# def square(x):
+#
+#     '''dsaff'''
+#     print('11111aaaa')
+#     return x*x
+# print(square(2))
+# print(dir(square))
+# print(square.__doc__)  #返回函数中的文档字符串,主要指注释中的文字
+# print(square.__name__)  #返回函数名字
+# print(square.__module__) #返回函数定义所在的模块，输出 "__main__"
+# print(square.__dict__)
 
 
+#请设计一个decorator，它可作用于任何函数上，并打印该函数的执行时间：
 
+# import functools
+# import time
+# def fun_time(func):
+#     @functools.wraps(func)  #避免待装饰函数因为装饰器的加入而受到影响
+#     def inner(*args,**kwargs):  #表示inner（）这个函数可以接受不限多个参数，参数类型也不受限制
+#         start = time.time()
+#         func(*args,**kwargs)
+#         end = time.time()
+#         #print('程序执行时间为:%s'%(end-start))
+#         print('%s executed in %s ms'%(func.__name__,(end-start)))
+#     return inner
+#
+# @fun_time
+# def square(x):
+#     return x*x
+#
+# print(square(100000000))
+
+
+# import functools
+#
+# def log(func):
+#     @functools.wraps(func)
+#     def wrapper(*args, **kw):
+#         print('call %s():' % func.__name__)
+#         return func(*args, **kw)
+#     return wrapper
+#
+# @log
+# def now():
+#     print('2015-3-25')
+#
+# now()
+#
+# def logger(text):
+#     def decorator(func):
+#         @functools.wraps(func)
+#         def wrapper(*args, **kw):
+#             print('%s %s():' % (text, func.__name__))
+#             return func(*args, **kw)
+#         return wrapper
+#     return decorator
+#
+# @logger('DEBUG')
+# def today():
+#     print('2015-3-25')
+#
+# today()
+# print(today.__name__)
+
+
+# #位置参数实例：
+# def func(b,a):  # 实参100 对应的是b，实参50 对应的是a，因此打印出 a，b 就是50，100
+#     print(a,b)
+#
+# func(100,50)  #50 100
+
+print(int('123456',base=8))  #表示字符串'123456' 由八进制转换为十进制
+print(int('110',base=2))  #表示字符串'110' 由二进制转换为十进制
+print(int('1100000',base=10))
+print()
+
+import functools
+int2 = functools.partial(int,base=2)  #第一个参数为 函数或者功能，后面的参数为待固定的值
+# 偏函数的作用就是 把一个函数的某些参数给固定（也就是设置默认值），返回一个新的函数，仅仅用来接收另外一部分参数，
+print(int2('10101'))
