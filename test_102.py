@@ -1,5 +1,6 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding:utf-8 -*-
+
 
 # print('sss','dd','dfadf') #一次性输入多个字符串
 #
@@ -240,23 +241,24 @@
 # def _odd_iter():
 #     n =1
 #     while True:
-#         n = n +2
-#         yield n   #  输出一个 从3 开始的无限序列，且数据以迭代器数据流的方式存储（惰性序列），需要使用list（）强制转换为序列
+#         n = n +1
+#         yield n   # 输出一个 从2 开始的无限序列，且数据以迭代器数据流的方式存储（惰性序列），需要使用list（）强制转换为序列
 #
 # def _not_divisible(n):
 #     return lambda x:x % n >0 #筛选处所以不能被整除的数
 #
 # def primes():
-#     yield 2  #因为2是素数 ，先返回
-#     it = _odd_iter()  #初始序列（3 ，~）
+#     #yield 2  #因为2是素数 ，先返回
+#     it = _odd_iter()  #初始序列（2 ，~）
 #     while True:
-#         n = next(it)  #第一次循环：n =3
-#         yield n  #将 3返回 并挂起程序，然后在继续执行yield后面的代码
+#         n = next(it)  #第一次循环：n =2
+#         yield n  #将 2返回 并挂起程序，然后在继续执行yield后面的代码
 #
 #         it = filter(_not_divisible(n),it)
-#         #此时 it为一个（3，~）的序列，_not_divisible(n)此处的n为3 ，将不能被3整除的数保留并返回，由于此处n是动态变化的，因此函数参数中需要指定n
+#         #此时 it为一个（2，~）的序列，_not_divisible(n)此处的n为2 ，将不能被2整除的数保留并返回，由于此处n是动态变化的，因此函数参数中需要指定n
+#         # primes（）是一个生成器函数，因此会返回一个可迭代的数据流
 #
-# for n in primes():  # 打印素数
+# for n in primes():  # 打印迭代器中小于20的素数
 #     if n < 20:
 #         print(n)
 #     else:
@@ -291,171 +293,150 @@
 #     main()
 
 
-#回数是指从左向右读和从右向左读都是一样的数，例如12321，909。请利用filter()筛选出回数：
-# def huishu(s):
-#     if len(s) == 2:
-#         return lambda s:s[0]==s[1]
-#     if len(s) == 3:
-#         if s[0] == s[2] and [s[0] for s[0] in range(1,10)] and [s[1] for s[1] in range(10)] and [s[2] for s[2] in range(1,10)]:
-#             return s
-#
-# print(list(filter(huishu,map(str,[x for x in range(1,1000)]))))
-
-
+# # 回数是指从左向右读和从右向左读都是一样的数，例如12321，909。请利用filter()筛选出回数：
 # def is_palindrome(num):
 #     num_str = str(num)  #将整数转换为字符串
 #     str_len = len(num_str)  #求某个数的长度
-#     for k in range(str_len):
-#         if num_str[k] != num_str[str_len - 1 - k]:
+#     '''
+#     1、当字符串长度为1时，k只能取0，如果num_str[0] != num_str[1-1-0] 则返回false
+#     2、当字符串长度为2时，k可以取0，1，取1时 如果num_str[0] != num_str[2-1-0]，
+#     取1时，如果num_str[1] != num_str[2-1-1]
+#     '''
+#     for k in range(str_len):   #这里的思路是拿到一个具体的数字去判断是否为回数
+#         if num_str[k] != num_str[str_len - 1 - k]: #通过分析可以找到一个数字字符串左边的下标和右边下标的规律
 #             return False
 #     return True
-#
-#
 # # 调用
 # output = filter(is_palindrome, range(1, 1000))  #给filter（）的两个参数，一个是用来判断某个数 是否为回数的函数，另外一个参数为一个序列
 # print('1~1000以内的回数:', list(output))  #由于filter（）函数返回一个可迭代的对象 因此需要使用list（）将其强制输出
 
 
-# #装饰器
+#请sorted（）函数对列表按照姓名进行排序：
+#方法1：使用函数定义
+# L = [('Bob',75),('Adam',92),('Bart',66),('Lisa',88)]
+# def by_name(t):
+#     return t[0]
+
+# def by_score(t):
+#     #return t[1]
+#     return -t[1]  #在元素或者列表前面加个“- ” 表示排序反转，及从高到低排序
 #
-# def logger(func):
-#     def inner(*args,**kwargs):
-#         print('参数为：%s，%s'%(args,kwargs))
-#         return func(*args,**kwargs) +1
-#     return inner
+# print (sorted(L,key=by_name))
+# #print (sorted(L,key=by_score,reverse=True))  #排序默认从低到高 ，将翻转参数设为true，则改为从高到低
+# print (sorted(L,key=by_score))
+
+#使用 operator.itemgetter()方法
+# import operator
+# L = [('Bob',75),('Adam',92),('Bart',66),('Lisa',88)]
+# print(sorted(L,key=operator.itemgetter(0))) ##itemgetter(0)用于获取对象L的第1个维度的数据 用来排序
+# print(sorted(L,key=operator.itemgetter(1),reverse=True))
+
+#使用lambda表达式
+# L = [('Bob', 75), ('Adam', 92), ('Bart', 66), ('Lisa', 88)]
+# L2 = sorted(L, key=lambda x : x[1],reverse=True)
+# print(L2)
+
+# import operator
+# #operator  模块下的 itemgetter（）函数用于获取对象那些维度的数据
+# a = [('john', 'A', 15), ('jane', 'B', 12), ('dave', 'C', 10)]
+# print (sorted(a, key=operator.itemgetter(2),reverse=True))  #itemgetter(2)用于获取对象a的第三个维度的数据 用来排序
+
+#利用闭包返回一个计数器函数，每次调用它返回递增整数：
 #
-# @logger
-# def foo1(x,y=2):
-#     return x*y
+# def createCounter():
+#     fs = [0]  #定义一个序列，并赋一个初值
+#     def counter():
+#         fs[0] = fs[0]+1   #函数没执行一次 序列的值加1
+#         return fs[0]
+#     return counter    #createCounter()最后会返回一个函数
 #
-# print(foo1(5,4))   #输出为：参数为：(5, 4)，{}  21
-#
-# @logger
-# def foo2():
-#     return 2
-#
-# @logger
-# def foo3(x=5,y=5,z=2):
-#     return x+y+z
-#
-# @logger
-# def foo4(x,y,z):
-#     return x+y+z
-#
-# # print(foo1(5,4))   #输出为：参数为：(5, 4)，{}  21
-# # print(foo1(1))  #参数为：(1,)，{}   3
-# # print(foo2(1))   #输出报错：TypeError: foo2() takes 0 positional arguments but 1 was given
-# # print(foo2())   #参数为：()，{}   3
-# # print(foo3())   #参数为：()，{}  13
-# # print(foo4())  #输出报错：TypeError: foo4() missing 3 required positional arguments: 'x', 'y', and 'z'
+# print (createCounter()) #输出 <function createCounter.<locals>.counter at 0x000002BD08F08598>
+# f = createCounter()
+# # createCounter() 会得到一个counter（）的函数及相关参数，但并不是最终结果，只有再次调用f（）的时候 才是相当于在调用counter（）函数计算结果
+# print(f(),f(),f(),createCounter())
+
+# def createCounter():
+#     n = 0
+#     def counter():
+#         '''
+#         在python中 内存函数对外层作用域的变量只有可读权限，而nonlocal 可以是我们自由操作
+#         外层作用域的变量，包括修改
+#         '''
+#         nonlocal n
+#         n = n+1
+#         return n
+#     return counter
+# f = createCounter()
+# print (f(),f())
 #
 
 
-# a_string = "This is a global variable"
-# def foo():
-#     a_string = "test"
-#     print(locals())
+# gcount = 0
+# def global_test():
+#     print (gcount)
 #
-# print(foo())
-# print(a_string)
-
-
-# a_string = "This is a global variable"
-# def foo():
-#     a_string = 'test'
-#     def inner():
-#         nonlocal a_string
-#         a_string = a_string +'111'
-#         print(a_string)
-#     return inner
+# def global_counter():
+#     global gcount
+#     gcount += 1
+#     return gcount
 #
-# f = foo()
-# f()
-# print(a_string)
-
-#函数属性：
-# def square(x):
+# def global_counter_test():
+#     print(global_counter())
+#     print(global_counter())
+#     print(global_counter())
 #
-#     '''dsaff'''
-#     print('11111aaaa')
-#     return x*x
-# print(square(2))
-# print(dir(square))
-# print(square.__doc__)  #返回函数中的文档字符串,主要指注释中的文字
-# print(square.__name__)  #返回函数名字
-# print(square.__module__) #返回函数定义所在的模块，输出 "__main__"
-# print(square.__dict__)
+# print (global_counter_test())
+# print (global_counter_test())
+# print (gcount)
 
-
-#请设计一个decorator，它可作用于任何函数上，并打印该函数的执行时间：
-
-# import functools
-# import time
-# def fun_time(func):
-#     @functools.wraps(func)  #避免待装饰函数因为装饰器的加入而受到影响
-#     def inner(*args,**kwargs):  #表示inner（）这个函数可以接受不限多个参数，参数类型也不受限制
-#         start = time.time()
-#         func(*args,**kwargs)
-#         end = time.time()
-#         #print('程序执行时间为:%s'%(end-start))
-#         print('%s executed in %s ms'%(func.__name__,(end-start)))
-#     return inner
+# def make_counter():
+#     count = 0
 #
-# @fun_time
-# def square(x):
-#     return x*x
+#     def counter():
+#         nonlocal count
+#         count += 1
+#         return count
+#     return counter
 #
-# print(square(100000000))
+# def make_counter_test():
+#     mc = make_counter()
+#     print(mc())
+#     print(mc())
+#     print(mc())
+#
+# print (make_counter_test())
 
 
-# import functools
-#
-# def log(func):
-#     @functools.wraps(func)
-#     def wrapper(*args, **kw):
-#         print('call %s():' % func.__name__)
-#         return func(*args, **kw)
-#     return wrapper
-#
-# @log
-# def now():
-#     print('2015-3-25')
-#
-# now()
-#
-# def logger(text):
-#     def decorator(func):
-#         @functools.wraps(func)
-#         def wrapper(*args, **kw):
-#             print('%s %s():' % (text, func.__name__))
-#             return func(*args, **kw)
-#         return wrapper
-#     return decorator
-#
-# @logger('DEBUG')
-# def today():
-#     print('2015-3-25')
-#
-# today()
-# print(today.__name__)
+# def lazy_sum(*args):
+#     ax = 0
+#     def sum():
+#         nonlocal ax
+#         for n in args:
+#             ax = ax + n
+#         return ax
+#     return sum
+# f = lazy_sum(1,2,3,4)
+# print (f())
 
 
-# #位置参数实例：
-# def func(b,a):  # 实参100 对应的是b，实参50 对应的是a，因此打印出 a，b 就是50，100
-#     print(a,b)
+#将匿名函数作为函数返回
+# def build(x, y):
+#     return lambda: x * x + y * y  #lambda 参数：对参数操作的表达式，这里如果用作返回值的话，参数默认使用外层函数的
 #
-# func(100,50)  #50 100
+# f = build(2,3)
+# print (f())
 
-print(int('123456',base=8))  #表示字符串'123456' 由八进制转换为十进制
-print(int('110',base=2))  #表示字符串'110' 由二进制转换为十进制
-print(int('1100000',base=10))
-print()
+#也可以将参数放在 匿名函数中
+# def build():
+#     return lambda x,y: x * x + y * y
+# f = build()
+# print (f(2,3))
 
-import functools
-int2 = functools.partial(int,base=2)  #第一个参数为 函数或者功能，后面的参数为待固定的值
-# 偏函数的作用就是 把一个函数的某些参数给固定（也就是设置默认值），返回一个新的函数，仅仅用来接收另外一部分参数，
-print(int2('10101'))
 
-print()
-max2 = functools.partial(max,10)
-print(max2(2,3,9)) #输出：10
+# def is_odd(n):
+#     return n % 2 == 1
+#
+# L = list(filter(is_odd, range(1, 20)))
+
+L = list(filter((lambda n: n%2 ==1),range(1,20)))
+print(L)
