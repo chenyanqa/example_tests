@@ -34,50 +34,51 @@ $ python -m unittest mydict_test
 
 '''
 
-# import unittest
-#
-# from mydict import Dict #从某个文件（模块）引入待测试的主类
-#
-# class TestDict(unittest.TestCase):  #定义测试主类，一般以Test开头，默认继承unittest.TestCase类
-# 	def test_init(self):  #定义测试方法，一般以test开头，测试被测类的构造方法
-# 		d = Dict(a =1,b ='test')  #先调用被测主类生产一个实例，然后使用这个实例去操作被测类，观察响应是否正常
-# 		self.assertEqual(d.a,1)  #各种断言
-# 		self.assertEqual(d.b,'test')
-# 		self.assertTrue(isinstance(d,dict)) #d是父类dict的一个实例
-#
-# 	def test_key(self): #由于这个测试方法的目的是测试key的情况，所有通过dict['key']的方法赋值，然后通过实例调属性的方式访问
-# 		d = Dict()  #每个测试方法都需要创建一个 被测类的对象
-# 		d['key'] = 'value' #相当于增加了一个键值对
-# 		#print(d)  #{'key': 'value'}
-# 		self.assertEqual(d.key,'value')
-#
-# 	def test_attr(self):#由于这个是测试类属性的情况，因此可以通过实例.属性的方法赋值，然后判断通过dict['key']的方式访问
-# 		d = Dict()
-# 		d.key = 'value'
-# 		self.assertTrue('key' in d) #这里的d 表示一个字典实例
-# 		self.assertEqual(d['key'],'value')
-#
-# 	def test_keyerror(self): #断言如果访问的key值不存在时，是否会报错
-# 		d = Dict()
-# 		with self.assertRaises(KeyError): #断言是否会抛出指定错误。with是一种异常处理机制
-# 			#print(self.assertRaises(KeyError)) #<unittest.case._AssertRaisesContext object at 0x000001F53F9AB630>
-# 			value = d['empty']
-# 			#d['empty'] = 'value' #这里如果这么写，则抛出AssertionError: KeyError not raised，这是因为这样写 相当于实在赋值
-# 			#会生产一个{empty:'value'}的键值对
-#
-# 	def test_attrerror(self):
-# 		d = Dict()
-# 		with self.assertRaises(AttributeError): #是AssertRaisesContext类的一个对象
-# 			value = d.empty #由于empty这个属性没有被定义过，因此直接访问的时候  肯定会报错
-#
-# 	def setUp(self):  #setUp()和tearDown()方法会分别在每个测试方法执行前后调用
-# 		print('setUp...')
-#
-# 	def tearDown(self):
-# 		print('tearDown...')
-#
-# if __name__ == '__main__': #执行测试类的一般模式，相当于可以把mydict_test.py当做正常脚本运行
-# 	unittest.main()
+import unittest
+
+from mydict import Dict #从某个文件（模块）引入待测试的主类
+
+class TestDict(unittest.TestCase):  #定义测试主类，一般以Test开头，默认继承unittest.TestCase类
+	def test_init(self):  #定义测试方法，一般以test开头，测试被测类的构造方法
+		d = Dict(a =1,b ='test')  #先调用被测主类生产一个实例，然后使用这个实例去操作被测类，观察响应是否正常
+		self.assertEqual(d.a,1)  #各种断言
+		self.assertEqual(d.b,'test')
+		self.assertTrue(isinstance(d,dict)) #d是父类dict的一个实例
+
+	def test_key(self): #由于这个测试方法的目的是测试key的情况，所有通过dict['key']的方法赋值，然后通过实例调属性的方式访问
+		d = Dict()  #每个测试方法都需要创建一个 被测类的对象
+		d['key'] = 'value' #相当于增加了一个键值对
+		#print(d)  #{'key': 'value'}
+		self.assertEqual(d.key,'value')
+
+	def test_attr(self):#由于这个是测试类属性的情况，因此可以通过实例.属性的方法赋值，然后判断通过dict['key']的方式访问
+		d = Dict()
+		d.key = 'value'
+		self.assertTrue('key' in d) #这里的d 表示一个字典实例
+		self.assertEqual(d['key'],'value')
+
+	def test_keyerror(self): #断言如果访问的key值不存在时，是否会报错
+		d = Dict()
+		with self.assertRaises(KeyError): #断言是否会抛出指定错误。with是一种异常处理机制
+			#print(self.assertRaises(KeyError)) #<unittest.case._AssertRaisesContext object at 0x000001F53F9AB630>
+			value = d['empty']
+			#d['empty'] = 'value' #这里如果这么写，则抛出AssertionError: KeyError not raised，这是因为这样写 相当于实在赋值
+			#会生产一个{empty:'value'}的键值对
+
+	def test_attrerror(self):
+		d = Dict()
+		with self.assertRaises(AttributeError): #是AssertRaisesContext类的一个对象
+			value = d.empty #由于empty这个属性没有被定义过，因此直接访问的时候  肯定会报错
+
+	def setUp(self):  #setUp()和tearDown()方法会分别在每个测试方法执行前后调用
+		print('setUp...')
+
+	def tearDown(self):
+		print('tearDown...')
+
+if __name__ == '__main__': #执行测试类的一般模式，相当于可以把mydict_test.py当做正常脚本运行
+	unittest.main()
 
 
-#练习题：对Student类编写单元测试，结果发现测试不通过，请修改Student类，让测试通过：
+
+
