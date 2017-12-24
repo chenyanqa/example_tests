@@ -17,7 +17,7 @@ if __name__ == '__main__':
 5、p.start()方法 表示启动子进程
 6、p.join()方法 表示等待子进程执行结束以后 在继续往下执行。
 7、创建子进程时，只需要传入一个执行函数和函数的参数，创建一个Process实例，用start()方法启动，这样创建进程比fork()还要简单
-
+8、使用多进程的常规方法是，先依次调用start启动进程，再依次调用join要求主进程等待子进程的结束。
 '''
 from multiprocessing import Process  #从multiprocessing模块导入Process类
 import os
