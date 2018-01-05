@@ -92,6 +92,38 @@ import re  #这里引入模块时，如果当前用户子定义的文件中有�
 #练习题：请尝试写一个验证Email地址的正则表达式。版本一应该可以验证出类似的Email：
 #someone@gmail.com      bill.gates@microsoft.com
 
+import re
+
+# s = r'[\w]+[\.]?[\w]*\@[\w]+\.com'
+# print(re.match(s,'someone@gmail.com'))
+# print(re.match(s,'bill.gates@microsoft.com'))
+
+
+def is_valid_email(addr):
+    s = r'[\w]+[\.]?[\w]*\@[\w]+\.com'
+    if re.match(s,addr) == None:
+        return False
+    else:
+        return True
+
+print(is_valid_email('someone@gmail.com'))
+print(is_valid_email('mr-bob@example.com'))
+
+
+def name_of_email(addr):
+    s = r'([\w]+[\.]?[\w]*)\@([\w]+\.com)'
+    print(re.match(s,addr).groups())
+    #print(re.match(s, addr).group(1))
+
+name_of_email('someone@gmail.com')
+
+
+
+
+
+
+
+
 
 
 
