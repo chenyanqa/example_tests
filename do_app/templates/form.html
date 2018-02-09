@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Please Sign In</title>
+</head>
+<body>
+    {% if message %}   {# 该处注释语法，需要注意，不能用<!-- --> #}
+    <p style="color: red">{{ message }}</p>
+    {% endif %}
+
+
+    <!-- action是你form表单提交的地址-->
+    <form action="/signin" method="post">  <!-- 表单的action 表示如果触发了这个表单的提交等操作后跳转的页面或者对应的响应操作-->
+        <legend> Please sign in:</legend>  <!-- <legend>标签 表示组合form表单下的元素，这里就相当于是账户名、密码相关栏最上面的标题 -->
+        <p><input name="username" placeholder="Username" value="{{username}}"></p> <!--placeholder的作用类似搜索框的暗文-->
+        <p><input name="password" placeholder="Password" type="password" value="{{password}}"></p>
+        <p><button type="submit">Sign In</button></p>
+    </form>
+
+</body>
+</html>
